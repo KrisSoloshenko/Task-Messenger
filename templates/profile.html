@@ -1,0 +1,27 @@
+{% extends "default.html" %}
+{% load static %}
+
+{% block title %}
+Profile
+{% endblock title %}
+
+{% block content %}
+    <div align="left"><br>
+        <div >
+            <h2> Profile page <strong>{{ user.username }}</strong></h2><br>
+            {% if user.avatar %}
+                    <img src="{{ user.avatar.url }}" width="200"><br>
+            {% else %}
+                <p>User have not photo</p>
+            {% endif %}
+        </div><hr>
+    
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <br>
+            {{ form.as_p }}
+            <button type="submit">Submit</button>
+        </form>
+</div>
+
+{% endblock content %}
