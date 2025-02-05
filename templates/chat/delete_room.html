@@ -1,0 +1,10 @@
+{% extends "default.html" %}
+ 
+{% block content %}
+    <h3>Удаление чата</h3>
+    <form action="" method="post">
+        {% csrf_token %}
+        <p>Вы уверены, что хотите удалить чат "{{ room.name }}"?</p>
+        <input type="submit" value="Подтвердить" />
+    </form>
+{% endblock content %}

@@ -1,0 +1,16 @@
+{% extends "default.html" %}
+{% load static %}
+
+{% block title %}
+Chat Room
+{% endblock title %}
+
+{% block content %}
+    <br><h3>Редактирование чата</h3>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <br>
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Изменить</button>
+    </form>
+{% endblock content %}

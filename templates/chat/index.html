@@ -1,17 +1,43 @@
 {% extends "default.html" %}
+{% load static %}
 
 {% block title %}
-Chat
+Home
 {% endblock title %}
 
 {% block content %}
-    <br>
-    <h2>What chat room would you like to enter?</h2>
-    <input id="room-name-input" type="text" size="50">
-    <br>
-    <br>
-    <input id="room-name-submit" type="button" value="Enter">
+{% if user.is_authenticated %}
+    <div class="row">
+        <div class="col-3"  align="left"><br>
+            <a class="nav-link" href="{% url 'profile' user.id %}" style="color: darkblue"><h5>Мой профиль</h5></a>
+            <a class="nav-link" href="{% url 'room_create' %}" style="color: darkblue"><h5>Создать чат</h5></a>
+            <a class="nav-link" href="{% url 'users_list' %}" style="color: darkblue"><h5>Все пользователи</h5></a>
+        </div>
+        
+        <div class="col" align="left"><br>
+                <h5> Чаты:</h5>
+                <table cellspacing="0" cellpadding="15">   
+                    {% for room in user_rooms%}
+                    <tr>
+                        <td style="width: 800px;">
+                            {% if room.photo %}
+                                <img src="{{ room.photo.url }}" class="round">
+                            {% else %}
+                                <img src="media/room/room.png" class="round">
+                            {% endif%}
+                            <a href="{% url 'room' pk=room.id %}">{{room.name}}</a>
+                        </td>
+                    </tr>
+                    {% endfor%}
+                
+                </table>
+    </div>  
+    </div>
+{% else %}
+    <div><br>
+        <h3>Добро пожаловать в мессенджер!</h3><br>
+        <a class="nav-link" href="{% url 'login' %}" style="color: darkblue">для создания чата необходимо авторизоваться</a>
+    </div> 
+{%endif%}
 
-    <script>
-    </script>
 {% endblock %}

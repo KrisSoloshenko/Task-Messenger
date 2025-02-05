@@ -1,5 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
-from .models import User
+from django import forms
+
+from .models import User, Room
 
 
 class SignUpForm(UserCreationForm):
@@ -11,3 +13,18 @@ class SignUpForm(UserCreationForm):
             "password1",
             "password2",
         )
+        
+
+class ChatForm(forms.ModelForm):
+    current_users = forms.ModelMultipleChoiceField(
+        queryset=User.objects.all(),
+        widget=forms.CheckboxSelectMultiple, 
+        required=False
+    )
+
+    class Meta:
+        model = Room
+        fields = ['name', 'current_users',]
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+        }

@@ -1,0 +1,87 @@
+{% extends "default.html" %}
+{% load static %}
+
+{% block title %}
+Chat Room
+{% endblock title %}
+
+{% block content %}
+    <div class="row">
+        <div class="col" align="left"> 
+            <div align="left">
+                <p><h5> Участники комнаты:</h5></p>
+            </div>
+            {% for user in current_users %}
+                <p><img src="{{ user.avatar.url }}" class="round"> {{ user.username}}</p>
+            {% endfor %}
+        </div>
+        <div class="col">
+            <div align="left" background-color='red'>
+                <p>
+                    <h5>
+                        {% if room.photo %}
+                            <img src="{{ room.photo.url }}" class="round">
+                        {% endif %}
+                        {{ room_name }}
+                    </h5>
+                    <a class="nav-link" href="{% url 'update_room' room.id %}" style="color: darkblue">редактировать</a>
+                    <a class="nav-link" href="{% url 'delete_room' room.id %}" style="color: darkblue">удалить</a>
+                </p>
+            </div>
+            <textarea id="chat-log" cols="130" rows="20">
+                    {% if last_messages %}
+                    {% for message in last_messages%}
+                        ({{message.created_at}}) {{message.user.username}}: {{ message.text }}
+                    {% endfor %}
+                {% else %}
+                    {% for message in messages%}
+                        ({{message.created_at}}) {{message.user.username}}: {{ message.text }}
+                    {% endfor %}                    
+                {% endif %}
+            </textarea>
+            <div>
+                <p><input id="chat-message-input" type="text" size="100"></p>
+                <p><input id="chat-message-submit" type="button" value="Отправить"></p>
+                {{ chat_id|json_script:"room-id" }}
+            </div>
+
+            <script>
+                const roomId = JSON.parse(document.getElementById('room-id').textContent);
+        
+                const chatSocket = new WebSocket(
+                    'ws://'
+                    + window.location.host
+                    + '/ws/chat/'
+                    + roomId
+                    + '/'
+                );
+        
+                chatSocket.onmessage = function(e) {
+                    const data = JSON.parse(e.data);
+                    document.querySelector('#chat-log').value += (data.message + '\n');
+                };
+        
+                chatSocket.onclose = function(e) {
+                    console.error('Chat socket closed unexpectedly');
+                };
+        
+                document.querySelector('#chat-message-input').focus();
+                document.querySelector('#chat-message-input').onkeyup = function(e) {
+                    if (e.key === 'Enter') {  // enter, return
+                        document.querySelector('#chat-message-submit').click();
+                    }
+                };
+        
+                document.querySelector('#chat-message-submit').onclick = function(e) {
+                    const messageInputDom = document.querySelector('#chat-message-input');
+                    const message = messageInputDom.value;
+                    chatSocket.send(JSON.stringify({
+                        'message': message
+                    }));
+                    messageInputDom.value = '';
+                };
+            </script>
+        </div>
+    </div>
+
+{% endblock content %}

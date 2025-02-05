@@ -8,11 +8,11 @@ Profile
 {% block content %}
     <div align="left"><br>
         <div >
-            <h2> Profile page <strong>{{ user.username }}</strong></h2><br>
+            <h2> Страница профиля <strong>{{ user.username }}</strong></h2><br>
             {% if user.avatar %}
                     <img src="{{ user.avatar.url }}" width="200"><br>
             {% else %}
-                <p>User have not photo</p>
+                <p>У пользователя нет фото</p>
             {% endif %}
         </div><hr>
     
@@ -20,7 +20,7 @@ Profile
             {% csrf_token %}
             <br>
             {{ form.as_p }}
-            <button type="submit">Submit</button>
+            <button type="submit" class="btn btn-primary">Изменить</button>
         </form>
 </div>
 

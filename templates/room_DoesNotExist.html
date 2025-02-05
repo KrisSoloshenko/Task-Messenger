@@ -1,0 +1,15 @@
+{% extends "default.html" %}
+
+{% block title %}
+Chat
+{% endblock title %}
+
+{% block content %}
+    <br>
+    <h2>Кажется, чата "{{room_name}}" еще не существует( </h2><br>
+    
+
+    <a class="nav-link" href="{% url 'index' %}" style="color: darkblue"><h5>Вернуться назад</h5></a>
+    <a class="nav-link" href="{% url 'room_create' %}" style="color: darkblue"><h5>Создать новый чат</h5></a>
+
+{% endblock %}

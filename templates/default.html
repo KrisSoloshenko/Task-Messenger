@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 {% load cache %}
+{% load static %}
+
 <html lang="en">
-    {% cache 300 head %}
         <head>
             <meta charset="utf-8"/>
             <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
@@ -15,36 +16,38 @@
             {% load static %}
             <!-- Core theme CSS (includes Bootstrap)-->
             <link href="{% static 'css/styles.css' %}" rel="stylesheet"/>
+
+            <style>
+                .round {
+                 border-radius: 100%;
+                 width: 50px;
+                 height: 50px;
+                }
+            </style>
         </head>
-    {% endcache %}
+
     <body>
     <!-- Responsive navbar-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
             <div class="container">
-                {% cache 60 nav1 %}
-                <a class="navbar-brand" href="#">Messenger</a>
+                {% comment %} {% cache 60 nav1 %} {% endcomment %}
+                <a class="navbar-brand" href="/">Messenger</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                         data-target="#navbarResponsive"
                         aria-controls="navbarResponsive" aria-expanded="false"
                         aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                {% endcache %}
+                {% comment %} {% endcache %} {% endcomment %}
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="/">Главная</a>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'signup' %}">Регистрация</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'login' %}">Вход</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'signup' %}">Регистрация</a>
-                        </li>
                         {% if user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'profile' user.id %}">Мой профиль</a>
-                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'logout' %}">Выход</a>
                         </li>

@@ -1,0 +1,31 @@
+{% extends "default.html" %}
+
+{% block title %}
+Create chat
+{% endblock title %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <h2>Создать новый чат</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="chat-name">Название чата:</label>
+            <input type="text" class="form-control" name="name" placeholder="Введите имя чата" required>
+        </div>
+        <div class="form-group">
+            <label for="current_users">Участники (выберите минимум 1):</label>
+            <select multiple class="form-control" id="current_users" name="current_users" required>
+                {% for user in users %}
+                    <option value="{{ user.id }}">
+                        {{ user.username }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div><br>
+        <button type="submit" class="btn btn-primary">Создать чат</button>
+    </form>
+</div>
+
+{% endblock %}

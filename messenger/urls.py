@@ -16,17 +16,30 @@ Including another URLconf
 """
 from django.conf import settings
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
 from django.conf.urls.static import static
-from django.contrib.auth.views import LogoutView, LoginView
+from django.contrib.staticfiles.views import serve
+from django.contrib.auth.views import LoginView
+from rest_framework import routers
 
 from chat.views import SignUp, logout_view
+from chat import views
 
+
+def return_static(request, path, insecure=True, **kwargs):
+  return serve(request, path, insecure, **kwargs)
+
+
+router = routers.DefaultRouter()
+router.register(r'rooms', views.RoomViewset)
+router.register(r'messages', views.MessageViewset)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    re_path(r'^static/(?P<path>.*)$', return_static, name='static'),
     path('', include("chat.urls")),
     path('signup/', SignUp.as_view(), name='signup'),
     path('login/', LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('logout/', logout_view, name='logout'),
+    path('api/', include(router.urls))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

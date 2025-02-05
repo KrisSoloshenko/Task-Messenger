@@ -1,0 +1,23 @@
+{% extends "default.html" %}
+
+{% block title %}
+List of users
+{% endblock title %}
+
+{% block content %}
+    <h2>Все пользователи: </h2><br>
+    
+        {% for user in users %}
+            <div class="row"><p>
+                <div class="col" align='center'>
+                    <img src="{{ user.avatar.url }}" class="round">
+                    {{ user.username }}
+                </div>
+            
+                <div class="col" align='center'>
+                    <a href="{% url 'private_room' pk=user.id %}" class="btn btn-primary">Написать сообщение</a>
+                </div> 
+            </p></div>
+        {% endfor %}
+    
+{% endblock %}
