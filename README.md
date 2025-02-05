@@ -1,2 +1,4 @@
-Команда запуска: daphne messenger.asgi:application
-SuoerUser: log - admin, pass - admin
+# Команда запуска: daphne messenger.asgi:application
+
+
+# SuperUser: log - admin, pass - admin
